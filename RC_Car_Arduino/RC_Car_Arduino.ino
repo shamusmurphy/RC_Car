@@ -22,6 +22,9 @@ void setup() {
   // axel servo
   pinMode(2, OUTPUT);
 
+  // engine relay
+  pinMode(3, OUTPUT);
+
   // setup serial communication
   Serial.begin(9600);
 
