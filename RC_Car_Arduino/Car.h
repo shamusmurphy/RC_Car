@@ -23,63 +23,107 @@ class Car {
 
     // transmission
     char transmission;
+
+    // pins
+    int ep; // engine pin
+    int dp; // direction pin
+
+    // constants
+    const int lsp = 3; // left speed pin
+    const int rsp = 11; // right speed pin
+    const int lbp = 9; // left break pin
+    const int rbp = 8; // right break pin
+    const int ldp = 12; // left direction pin
+    const int rdp = 13; // right direction pin
     
 
   private:
-    // constructor
-    car() {
+    // constructor (engine pin, direction pin)
+    car(int enginePin, int directionPin;) {
+      // set vars
       this->speedL = 0;
       this->speedR = 0;
       this->engineOn = false;
       this->brake = true;
       this->direction = 90;
       this->transmission = 'p';
+      this->ep = enginePin;
+      this->dp = directionPin;
+
+      // set pin modes
+      pinMode(lsp, OUTPUT);
+      pinMode(rsp, OUTPUT);
+      pinMode(lbp, OUTPUT);
+      pinmode(rbp, OUTPUT);
+      pinMode(ldp, OUTPUT);
+      pinMode(rdp, OUTPUT);
+      pinMode(ep, OUTPUT);
+      pinMode(dp, OUTPUT);
     }
 
     // updates Car to right status
     void update() {
-      if (transmission == 'p') {
-
+      // checks and sets brakes
+      if (brake == true) { // brake on
+        digitalWrite(lbp, HIGH);
+        digitalWrite(rbp, HIGH);
       }
-      else if (transmission == 'f') {
-
+      else if (brake == false) { // brake off
+        digitalWrite(lbp, LOW);
+        digitalWrite(rbp, LOW);
       }
-      else if (transmission == 'r') {
 
+      // checks transmission and updates speed
+      if (transmission == 'f') { // drive
+        digitalWrite(ldp, HIGH);
+        digitalWrite(rdp, HIGH);
       }
-      else {
-        Serial.println("out of gear");
-        transmission = 'p';
+      else if (transmission == 'r') { // reverse
+        digitalWrite(ldp, LOW);
+        digitalWrite(rdp, LOW);
+      }
 
-      }
+      // sets direction angle
+      analogWrite(dp, direction);
+
+      // updates speed
+      analogWrite(lsp, speedL);
+      analogWrite(ldp, speedR);
     }
 
     // turns engine on or off
     void engineTurn(bool turn) {
       if (turn == true) { // on
         engineOn = true;
-        digitalWrite(3, HIGH);
+        digitalWrite(ep, HIGH);
       }
       else (turn == false) { // off
         engineOn = false;
-        digitalWrite(3, LOW);
+        digitalWrite(ep, LOW);
       }
     }
 
-    // shift car
+    // shift car between parked('p'), drive('f'), and reverse('r')
     void shiftTrans(char pos) {
-      if (pos == 'p') {
+      if (pos == 'p') { // parked
         transmission = 'p';
+        brake = true;
       }
-      else if (pos == 'f') {
+      else if (pos == 'f') { // drive
         transmission == 'f';
+        brake = false;
       }
-      else if (pos == 'r') {
+      else if (pos == 'r') { // reverse
         transmission == 'r';
+        brake = false;
       }
-      else {
+      else { // unrecognized shift
         Serial.println("invalid shift")
       }
+
+      // zeros speed
+      speedL = 0;
+      speedR = 0;
     }
 };
 

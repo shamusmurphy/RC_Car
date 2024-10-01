@@ -23,7 +23,7 @@ void setup() {
   pinMode(2, OUTPUT);
 
   // engine relay
-  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
 
   // setup serial communication
   Serial.begin(9600);
