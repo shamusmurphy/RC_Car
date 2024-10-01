@@ -7,27 +7,11 @@ to commands to be carried out by the Arduino Uno and motor sheild.
 #include "Car.h"
 
 int input;
+Car car(4, 2); // Car object
 
 void setup() {
-  // left wheel
-  pinMode(12, OUTPUT); // direction
-  pinMode(9, OUTPUT); // break
-  // digital pin: 3 - speed
-
-  // right wheel
-  pinMode(13, OUTPUT); // direction
-  pinMode(8, OUTPUT); // break
-  // digital pin: 11 - speed
-
-  // axel servo
-  pinMode(2, OUTPUT);
-
-  // engine relay
-  pinMode(4, OUTPUT);
-
   // setup serial communication
   Serial.begin(9600);
-
 }
 
 void loop() {
@@ -44,14 +28,47 @@ void loop() {
     Serial.println(" received");
   }
 
+  // executes command based on input
   switch (input) {
-    case 'b':
-      Serial.println("is b");
-      Serial.end();
+    case 'o': // turn engine on
+      car.engineTurn(true);
+      Serial.println("engine is on");
       break;
-
-    default:
+    case 'i': // turn engine off
+      car.engineTurn(false);
+      Serial.println("engine is off");
+      break;
+    case 'l': // turn left
+      car.turnLeft();
+      Serial.println("turning left");
+      break;
+    case 'r': // turn right
+      car.turnRight();
+      Serial.println("turning right");
+      break;
+    case 'f': // transmission: forward
+      car.shiftTrans('f');
+      Serial.println("car in drive");
+      break;
+    case 'b': // transmission: reverse
+      car.shiftTrans('r');
+      Serial.println("car in reverse");
+      break;
+    case 'p': // transmission: parked
+      car.shiftTrans('p');
+      Serial.println("car in park");
+      break;
+    case 's': // sets speed
+      input = Serial.read();
+      car.setSpeed(input);
+      Serial.print("speed set to: ");
+      Serial.println(input);
+      break;
+    default: // unrecognized code
       Serial.println("unrecognized code");
       break;
   }
+
+  // update cars status
+  car.update();
 }

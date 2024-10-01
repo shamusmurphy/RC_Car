@@ -1,5 +1,7 @@
-// Car class: this class represents an arduino controlled car
-// Mason Ritchie
+/*
+Car class: this class represents an arduino controlled car
+Mason Ritchie
+*/
 
 #ifndef Car_H
 #define Car_H
@@ -7,7 +9,7 @@
 #include <Arduino.h>
 
 class Car {
-  public:
+  private:
     // speed
     int speedL;
     int speedR;
@@ -37,9 +39,9 @@ class Car {
     const int rdp = 13; // right direction pin
     
 
-  private:
+  public:
     // constructor (engine pin, direction pin)
-    car(int enginePin, int directionPin;) {
+    Car(int enginePin, int directionPin) {
       // set vars
       this->speedL = 0;
       this->speedR = 0;
@@ -54,7 +56,7 @@ class Car {
       pinMode(lsp, OUTPUT);
       pinMode(rsp, OUTPUT);
       pinMode(lbp, OUTPUT);
-      pinmode(rbp, OUTPUT);
+      pinMode(rbp, OUTPUT);
       pinMode(ldp, OUTPUT);
       pinMode(rdp, OUTPUT);
       pinMode(ep, OUTPUT);
@@ -97,7 +99,7 @@ class Car {
         engineOn = true;
         digitalWrite(ep, HIGH);
       }
-      else (turn == false) { // off
+      else if(turn == false) { // off
         engineOn = false;
         digitalWrite(ep, LOW);
       }
@@ -117,14 +119,33 @@ class Car {
         transmission == 'r';
         brake = false;
       }
-      else { // unrecognized shift
-        Serial.println("invalid shift")
-      }
 
       // zeros speed
       speedL = 0;
       speedR = 0;
     }
+
+    // sets cars axel 5 degrees to the left
+    void turnLeft() {
+      if (direction < 180) {
+        direction = direction + 5;
+      }
+    }
+
+    // sets the cars axel 5 degrees to the right
+    void turnRight() {
+      if (direction < 0) {
+        direction = direction - 5;
+      }
+    }
+
+    // set speed
+    // either increments speed up and down (gas pedal) or set an exact speed (throttle)
+    void setSpeed(int speed) {
+      speedL = speed;
+      speedR = speed;
+    }
+
 };
 
 #endif
