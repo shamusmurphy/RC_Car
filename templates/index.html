@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formula2 RC Car Live Video</title>
+</head>
+<body>
+    <h1>Formula2 RC Car Live Video</h1>
+    <!-- video -->
+    <img src="{{ url_for('video_feed') }}" alt="Live Stream" style="width: 100%; max-width: 600px;">
+
+    <!-- controls -->
+    <div style="margin-top: 20px;">
+        <button onclick="sendCommand('forward')">Up</button>
+        <button onclick="sendCommand('reverse')">Down</button>
+        <button onclick="sendCommand('left')">Left</button>
+        <button onclick="sendCommand('right')">Right</button>
+    </div>
+
+    <script>
+        function sendCommand(command) {
+            fetch(`/command/${command}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
+
