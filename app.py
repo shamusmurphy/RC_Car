@@ -8,12 +8,17 @@ from picamera2 import Picamera2
 from time import sleep
 import io
 from PIL import Image
+import serial
 
 app = Flask(__name__)
 
 #initialize camera
 picam2 = Picamera2()
 picam2.configure(picam2.create_preview_configuration())
+
+# initialize serial communication
+ser = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
+ser.reset_input_buffer()
 
 #function to generate live video
 def generate_frames():
@@ -50,12 +55,16 @@ def video_feed():
 def handle_command(command):
     if command == 'forward':
         print("Forward command received")
+        ser.write("f")
     elif command == 'reverse':
         print("Reverse command received")
+        ser.write("b")
     elif command == 'left':
         print("Left command received")
+        ser.write("l")
     elif command == 'right':
         print("Right command received")
+        ser.write("r")
     
     # json that does not work yet
     return jsonify({"status": "success", "command": command})
