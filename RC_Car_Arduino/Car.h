@@ -7,12 +7,14 @@ Mason Ritchie
 #define Car_H
 
 #include <Arduino.h>
+#include <Servo.h>
 
 class Car {
   private:
     // speed
     int speedL;
     int speedR;
+    int speed;
 
     // battery control
     bool engineOn;
@@ -21,6 +23,7 @@ class Car {
     bool brake;
 
     // direction (servo control)
+    Servo servo;
     int direction;
 
     // transmission
@@ -45,6 +48,7 @@ class Car {
       // set vars
       this->speedL = 0;
       this->speedR = 0;
+      this->speed = 0;
       this->engineOn = false;
       this->brake = true;
       this->direction = 90;
@@ -60,7 +64,9 @@ class Car {
       pinMode(ldp, OUTPUT);
       pinMode(rdp, OUTPUT);
       pinMode(ep, OUTPUT);
-      pinMode(dp, OUTPUT);
+
+      // set servo pin
+      servo.attach(dp);
     }
 
     // updates Car to right status
@@ -86,7 +92,7 @@ class Car {
       }
 
       // sets direction angle
-      analogWrite(dp, direction);
+      servo.write(direction);
 
       // updates speed
       analogWrite(lsp, speedL);
@@ -141,9 +147,20 @@ class Car {
 
     // set speed
     // either increments speed up and down (gas pedal) or set an exact speed (throttle)
-    void setSpeed(int speed) {
+    void increaseSpeed() {
+      speed = speed + 5;
+      setSpeed();
+    }
+    void decreaseSpeed() {
+      speed = speed - 5;
+      setSpeed();
+    }
+    void setSpeed() {
       speedL = speed;
       speedR = speed;
+    }
+    int getSpeed() {
+      return speed;
     }
 
 };
