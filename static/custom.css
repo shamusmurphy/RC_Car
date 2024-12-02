@@ -1,0 +1,110 @@
+
+/* css for the site going with a blue theme */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1b26;
+    color: #fff;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 20px;
+}
+
+/* title */
+.box1 {
+    text-align: center;
+    padding: 20px;
+    background-color: #24283b;
+    border-radius: 10px;
+}
+
+.box1 h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #7aa2f7;
+}
+
+.box1 p {
+    color: #a9b1d6;
+}
+
+/* live stream */
+.box2 {
+    background-color: #24283b;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.box2 img {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+/* controls */
+.box3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    background-color: #24283b;
+    border-radius: 10px;
+}
+
+button {
+    padding: 15px 25px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #7aa2f7;
+    color: #1a1b26;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+/* movement for the buttons to add a little spice */
+button:hover {
+    background-color: #89b4fa;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* makin it responsive */
+@media (max-width: 768px) {
+    .box3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    button {
+        padding: 12px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .box3 {
+        grid-template-columns: 1fr;
+    }
+    
+    .box1 h1 {
+        font-size: 1.5rem;
+    }
+}
