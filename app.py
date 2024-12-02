@@ -5,12 +5,12 @@
     Created by Shamus Murphy
 """
 
-from flask import Flask, Response, request
+from flask import Flask, Response, request, jsonify, render_template
+from flask_cors import CORS
 from picamera2 import Picamera2
 from PIL import Image
 from time import sleep
 import io
-from PIL import Image
 import serial
 
 app = Flask(__name__)
@@ -18,18 +18,21 @@ app = Flask(__name__)
 #initialize camera
 cam = Picamera2()
 
+CORS(app)
+
 # initialize serial communication
-ser = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
-ser.reset_input_buffer()
+#ser = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
+#ser.reset_input_buffer()
 
+#render the web page
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-#function for camera
-def start_video():
-    cam.start()
 
 #start the stream
 def start_video():
-    picam2.start()
+    cam.start()
     try:
         while True:
             frame = cam.capture_array()
@@ -59,15 +62,23 @@ def live_stream():
     return Response(start_video(),
                 mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
-#commans root
-@app.route('/command/<command>', methods=['POST'])
+#comman func
 def handle_command(command):
     if command == 'increase':
         print("Increase command received")
-        ser.write("f")
-    elif command == 'Decrease':
+        ser.write("d")
+    elif command == 'decrease':
         print("Decrease command received")
+        ser.write("u")
+    elif command == 'forward':
+        print("Forward command received")
+        ser.write("f")
+    elif command == 'reverse':
+        print("Reverse command received")
+        ser.write("b")
+    elif command == 'park':
+        print("Park command received")
+        ser.write("p")
     elif command == 'left':
         print("Left command received")
         ser.write("l")
