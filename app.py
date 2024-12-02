@@ -10,6 +10,10 @@ from picamera2 import Picamera2
 from PIL import Image
 from time import sleep
 import io
+<<<<<<< HEAD
+=======
+from PIL import Image
+>>>>>>> 765c7ec2229a8d16bd7decfe9d69929669803f04
 import serial
 
 app = Flask(__name__)
@@ -22,9 +26,19 @@ ser = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
 ser.reset_input_buffer()
 
 
+<<<<<<< HEAD
 #function for camera
 def start_video():
     cam.start()
+=======
+# initialize serial communication
+ser = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
+ser.reset_input_buffer()
+
+#function to generate live video
+def generate_frames():
+    picam2.start()
+>>>>>>> 765c7ec2229a8d16bd7decfe9d69929669803f04
     try:
         while True:
             frame = cam.capture_array()
@@ -58,11 +72,19 @@ def live_stream():
 #commans root
 @app.route('/command/<command>', methods=['POST'])
 def handle_command(command):
+<<<<<<< HEAD
     if command == 'increase':
         print("Increase command received")
         ser.write("f")
     elif command == 'Decrease':
         print("Decrease command received")
+=======
+    if command == 'forward':
+        print("Forward command received")
+        ser.write("f")
+    elif command == 'reverse':
+        print("Reverse command received")
+>>>>>>> 765c7ec2229a8d16bd7decfe9d69929669803f04
         ser.write("b")
     elif command == 'left':
         print("Left command received")
@@ -70,6 +92,12 @@ def handle_command(command):
     elif command == 'right':
         print("Right command received")
         ser.write("r")
+<<<<<<< HEAD
+=======
+    
+    # json that does not work yet
+    return jsonify({"status": "success", "command": command})
+>>>>>>> 765c7ec2229a8d16bd7decfe9d69929669803f04
 
 if __name__ == '__main__':
     #run flask app
