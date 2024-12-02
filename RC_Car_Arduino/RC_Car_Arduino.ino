@@ -12,6 +12,9 @@ Car car(4, 2); // Car object
 void setup() {
   // setup serial communication
   Serial.begin(9600);
+
+  // initializes car
+  car.update()
 }
 
 void loop() {
