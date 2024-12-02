@@ -3,21 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./static/custom.css?version=<?php print time(); ?>" type="text/css">
     <title>Formula2 RC Car Live Video</title>
 </head>
 <body>
-    <h1>Formula2 RC Car Live Video</h1>
-    <!-- video -->
-    <img src="{{ url_for('video_feed') }}" alt="Live Stream" style="width: 100%; max-width: 600px;">
+	<main>
+		<section class="box1">
+			<h1>Formula2 RC Car Live Video</h1>
+			<p>Created by Collin Wrynn, Mason Ritchie, and Shamus Murphy</p>
+		</section>
 
-    <!-- controls -->
-    <div style="margin-top: 20px;">
-        <button onclick="sendCommand('forward')">Up</button>
-        <button onclick="sendCommand('reverse')">Down</button>
-        <button onclick="sendCommand('left')">Left</button>
-        <button onclick="sendCommand('right')">Right</button>
-    </div>
+		<section class="box2">
+			<!-- video -->
+			<img src="{{ url_for('live_stream') }}" alt="Live Stream" style="width: 100%; max-width: 600px;">
+		</section>
+		
+		<section class="box3">
+			<!-- slider for speed -->	
+			<input type="range" min="1" max="100" value="50" class="slider" id="bollocks">
+		</section>
 
+		<section class="box4">
+			<button onclick="sendCommand('increase')">Increase Speed</button>
+			<button onclick="sendCommand('decrease')">Decrease Speed</button>
+			<button onclick="sendCommand('left')">Left</button>
+			<button onclick="sendCommand('right')">Right</button>
+		</section>
+	</main>
     <script>
         function sendCommand(command) {
             fetch(`/command/${command}`, { method: 'POST' })
