@@ -6,19 +6,20 @@
 """
 
 from flask import Flask, Response, request
-from flask_cors import CORS
 from picamera2 import Picamera2
 from PIL import Image
 from time import sleep
 import io
+import serial
 
 app = Flask(__name__)
 
-#allow react app to make requests flask using Cross-Origin Resource Sharing
-CORS(app)
-
 #initialize camera
 cam = Picamera2()
+
+# initialize serial communication
+ser = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
+ser.reset_input_buffer()
 
 
 #function for camera
@@ -54,19 +55,21 @@ def live_stream():
                 mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-#speed
-@app.route('/set_speed', methods=['POST'])
-def set_speed():
-    speed = request.json['speed']
-    #MASON - all you bro
-    return {'status': 'success'}
-
-#direction
-@app.route('/set_direction', methods=['POST'])
-def set_direction():
-    direction = request.json['direction']
-    #MASON = all you bro
-    return {'status': 'success'}
+#commans root
+@app.route('/command/<command>', methods=['POST'])
+def handle_command(command):
+    if command == 'increase':
+        print("Increase command received")
+        ser.write("f")
+    elif command == 'Decrease':
+        print("Decrease command received")
+        ser.write("b")
+    elif command == 'left':
+        print("Left command received")
+        ser.write("l")
+    elif command == 'right':
+        print("Right command received")
+        ser.write("r")
 
 if __name__ == '__main__':
     #run flask app
