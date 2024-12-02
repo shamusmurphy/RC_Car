@@ -17,17 +17,15 @@
 			<!-- video -->
 			<img src="{{ url_for('live_stream') }}" alt="Live Stream" style="width: 100%; max-width: 600px;">
 		</section>
-		
-		<section class="box3">
-			<!-- slider for speed -->	
-			<input type="range" min="1" max="100" value="50" class="slider" id="bollocks">
-		</section>
 
 		<section class="box4">
 			<button onclick="sendCommand('increase')">Increase Speed</button>
 			<button onclick="sendCommand('decrease')">Decrease Speed</button>
+			<button onclick="sendCommand('forward')">Forward</button>
+			<button onclick="sendCommand('reverse')">Reverse</button>
+			<button onclick="sendCommand('park')">Park</button>
 			<button onclick="sendCommand('left')">Left</button>
-			<button onclick="sendCommand('right')">Right</button>
+			<button onclick="sendCommand('right')">right</button>
 		</section>
 	</main>
     <script>
