@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./static/custom.css?version=<?php print time(); ?>" type="text/css">
+    <link rel="stylesheet" href="./static/custom.css" type="text/css">
     <title>Formula2 RC Car Live Video</title>
 </head>
 <body>
@@ -18,14 +18,14 @@
 			<img src="{{ url_for('live_stream') }}" alt="Live Stream" style="width: 100%; max-width: 600px;">
 		</section>
 
-		<section class="box4">
+		<section class="box3">
 			<button onclick="sendCommand('increase')">Increase Speed</button>
 			<button onclick="sendCommand('decrease')">Decrease Speed</button>
 			<button onclick="sendCommand('forward')">Forward</button>
 			<button onclick="sendCommand('reverse')">Reverse</button>
 			<button onclick="sendCommand('park')">Park</button>
 			<button onclick="sendCommand('left')">Left</button>
-			<button onclick="sendCommand('right')">right</button>
+			<button onclick="sendCommand('right')">Right</button>
 		</section>
 	</main>
     <script>
