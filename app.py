@@ -1,65 +1,73 @@
-""" Python script that runs a live stream feed from a camera
-	to a web page index.html. Also takes in inputs for 
-	forward, reverse, right, and left. 
+"""
+    Python script that runs a live stream
+    feed from the camera on the RC Car to
+    a web page.
+    Created by Shamus Murphy
 """
 
-from flask import Flask, Response, render_template, request, jsonify
+from flask import Flask, Response, request
+from flask_cors import CORS
 from picamera2 import Picamera2
+from PIL import Image
 from time import sleep
 import io
-from PIL import Image
 
 app = Flask(__name__)
 
-#initialize camera
-picam2 = Picamera2()
-picam2.configure(picam2.create_preview_configuration())
+#allow react app to make requests flask using Cross-Origin Resource Sharing
+CORS(app)
 
-#function to generate live video
-def generate_frames():
-    picam2.start()
+#initialize camera
+cam = Picamera2()
+
+
+#function for camera
+def start_video():
+    cam.start()
     try:
         while True:
-            frame = picam2.capture_array()
+            frame = cam.capture_array()
 
-            # convert to rgb format since rgba does not work for some reason
+            #stream variable to temp store data
             stream = io.BytesIO()
-            Image.fromarray(frame).convert("RGB").save(stream, format='JPEG')
+
+            #need to convert from rgba to rgb
+            #would not work otherwise
+            Image.fromarray(frame).convert("RGB").save(stream, format="JPEG")
             stream.seek(0)
-            
+
+            #yield to efficiently generate frames
+            #translating from jpeg to mjpeg format to have continous stream
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + stream.getvalue() + b'\r\n')
+                    b'Content-Type: image/jpeg\r\n\r\n' + stream.getvalue() + b'\r\n')
             stream.seek(0)
             stream.truncate()
     finally:
-        picam2.stop()
-
-#render html
-@app.route('/')
-def index():
-    return render_template('index.html')
+        #turn off camera
+        cam.stop()
 
 #render stream
+#MIME type (Multipurpose Internet Mail Extensions) verifies the content being received
 @app.route('/stream')
-def video_feed():
-    return Response(generate_frames(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+def live_stream():
+    return Response(start_video(),
+                mimetype='multipart/x-mixed-replace; boundary=frame')
 
-#commans root
-@app.route('/command/<command>', methods=['POST'])
-def handle_command(command):
-    if command == 'forward':
-        print("Forward command received")
-    elif command == 'reverse':
-        print("Reverse command received")
-    elif command == 'left':
-        print("Left command received")
-    elif command == 'right':
-        print("Right command received")
-    
-    # json that does not work yet
-    return jsonify({"status": "success", "command": command})
+
+#speed
+@app.route('/set_speed', methods=['POST'])
+def set_speed():
+    speed = request.json['speed']
+    #MASON - all you bro
+    return {'status': 'success'}
+
+#direction
+@app.route('/set_direction', methods=['POST'])
+def set_direction():
+    direction = request.json['direction']
+    #MASON = all you bro
+    return {'status': 'success'}
 
 if __name__ == '__main__':
+    #run flask app
     app.run(host='0.0.0.0', port=5000)
-
