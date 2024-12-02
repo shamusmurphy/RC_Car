@@ -14,7 +14,7 @@ void setup() {
   Serial.begin(9600);
 
   // initializes car
-  car.update()
+  car.update();
 }
 
 void loop() {
@@ -61,11 +61,15 @@ void loop() {
       car.shiftTrans('p');
       Serial.println("car in park");
       break;
-    case 's': // sets speed
-      input = Serial.read();
-      car.setSpeed(input);
+    case 'u': // increase speed
+      car.increaseSpeed();
       Serial.print("speed set to: ");
-      Serial.println(input);
+      Serial.println(car.getSpeed());
+      break;
+    case 'd':
+      car.decreaseSpeed();
+      Serial.print("speed set to: ");
+      Serial.println(car.getSpeed());
       break;
     default: // unrecognized code
       Serial.println("unrecognized code");
