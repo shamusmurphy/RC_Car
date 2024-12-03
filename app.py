@@ -21,8 +21,8 @@ cam = Picamera2()
 CORS(app)
 
 # initialize serial communication
-#ser = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
-#ser.reset_input_buffer()
+ser = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
+ser.reset_input_buffer()
 
 #render the web page
 @app.route('/')
